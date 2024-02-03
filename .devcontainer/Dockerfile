@@ -50,7 +50,7 @@ RUN if [ ${USER_UID:-0} -ne 0 ] && [ ${USER_GID:-0} -ne 0 ]; then \
     ; fi
 
 # https://docs.platformio.org/en/latest/faq.html#platformio-udev-rules
-RUN curl -fLo /etc/udev/rules.d/99-platformio-udev.rules --create-dirs https://raw.githubusercontent.com/platformio/platformio-core/master/scripts/99-platformio-udev.rules \
+RUN curl -fLo /etc/udev/rules.d/99-platformio-udev.rules --create-dirs https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules \
     && usermod -a -G dialout $USERNAME \
     && usermod -a -G plugdev $USERNAME
 
