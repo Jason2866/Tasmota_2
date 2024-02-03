@@ -8,7 +8,7 @@
     // Use -bullseye variants on local on arm64/Apple Silicon.
     "args": {
       "VARIANT": "3.9-bullseye",
-      "PIO_VERSION": "6.1.3"
+      "PIO_VERSION": "6.1.13"
     }
   },
   // Configure tool-specific properties.
