@@ -50,14 +50,14 @@ RUN if [ ${USER_UID:-0} -ne 0 ] && [ ${USER_GID:-0} -ne 0 ]; then \
     ; fi
 
 # https://docs.platformio.org/en/latest/faq.html#platformio-udev-rules
-RUN curl -fLo /etc/udev/rules.d/99-platformio-udev.rules --create-dirs https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules \
-    && usermod -a -G dialout $USERNAME \
-    && usermod -a -G plugdev $USERNAME
+#RUN curl -fLo /etc/udev/rules.d/99-platformio-udev.rules --create-dirs https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules \
+#    && usermod -a -G dialout $USERNAME \
+#    && usermod -a -G plugdev $USERNAME
 
 # Restart udev service to use the newly installed udev rules
 #RUN service udev restart
 # some OpenOCD req outdated libmpfr.so.4
-RUN ln -s /usr/lib/x86_64-linux-gnu/libmpfr.so.6 /usr/lib/x86_64-linux-gnu/libmpfr.so.4
+#RUN ln -s /usr/lib/x86_64-linux-gnu/libmpfr.so.6 /usr/lib/x86_64-linux-gnu/libmpfr.so.4
 
 USER $USERNAME
 RUN python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core-installer/develop/get-platformio.py)"
