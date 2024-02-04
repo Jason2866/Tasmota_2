@@ -1,14 +1,13 @@
-# [Choice] Python version (use -bookworm or -bullseye variants on local arm64/Apple Silicon): 3, 3.12, 3.11, 3.10, 3.9, 3.8, 3-bookworm, 3.12-bookworm, 3.11-bookworm, 3.10-bookworm, 3.9-bookworm, 3.8-bookworm, 3-bullseye, 3.12-bullseye, 3.11-bullseye, 3.10-bullseye, 3.9-bullseye, 3.8-bullseye, 3-buster, 3.12-buster, 3.11-buster, 3.10-buster, 3.9-buster, 3.8-buster
-ARG VARIANT=3-bookworm
+# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.187.0/containers/python-3/.devcontainer/base.Dockerfile
+
+# [Choice] Python version: 3, 3.9, 3.8, 3.7, 3.6
+ARG VARIANT="3.9.0-buster"
 FROM python:${VARIANT}
 
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    # Remove imagemagick due to https://security-tracker.debian.org/tracker/CVE-2019-10131
-    && apt-get purge -y imagemagick imagemagick-6-common 
-
-# Temporary: Upgrade python packages due to https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-40897
-# They are installed by the base image (python) which does not have the patch.
-RUN python3 -m pip install --upgrade setuptools platformio
+# [Option] Install Node.js
+ARG INSTALL_NODE="true"
+ARG NODE_VERSION="lts/*"
+RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"; fi
 
 # [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.
 # COPY requirements.txt /tmp/pip-tmp/
@@ -20,4 +19,11 @@ RUN python3 -m pip install --upgrade setuptools platformio
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
 # [Optional] Uncomment this line to install global node packages.
-#RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+
+
+RUN pip install -U https://github.com/platformio/platformio-core/archive/develop.zip
+RUN platformio update
+# To get the test platforms
+RUN pip install PyYaml
+#ENV PATH /code/buildroot/bin/:/code/buildroot/tests/:${PATH}
