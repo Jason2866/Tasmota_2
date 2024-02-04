@@ -8,8 +8,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # Temporary: Upgrade python packages due to https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-40897
 # They are installed by the base image (python) which does not have the patch.
-RUN python3 -m pip install --upgrade setuptools\
-     && python3 -m pip install -U platformio
+RUN python3 -m pip install --upgrade setuptools platformio
 
 # [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.
 # COPY requirements.txt /tmp/pip-tmp/
